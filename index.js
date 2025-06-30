@@ -1,7 +1,7 @@
 const express = require("express");
 const PORT = process.env.PORT || 5000;
 const app = express();
-// import { pool } from './db.js';
+
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -16,7 +16,8 @@ app.use(express.json());
 
 app.get("/books", async (req, res) => {
   try {
-    res.status(200).send({ message: "user are return" });
+    const result=await pool.query("SELECT* FROM book" )
+    res.status(200).send({ message: "book was return",book:result.rows });
   } catch (error) {
     res.send({ error: "error.message" });
   }
