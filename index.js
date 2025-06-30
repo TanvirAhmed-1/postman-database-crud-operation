@@ -26,7 +26,8 @@ app.get("/books", async (req, res) => {
 app.get("/books/:id", async (req, res) => {
   try {
     const bookId = req.params.id;
-    res.status(200).send({ message: `book id is ${bookId}` });
+    const result=await pool.query(`SELECT* FROM book WHERE id=$1`,[bookId])
+    res.status(200).send({ message: `ID BASE BOOK `,book:result.rows });
   } catch (error) {
     res.send({ error: "error.message" });
   }
