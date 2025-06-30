@@ -67,9 +67,13 @@ app.put("/books/:id", async (req, res) => {
   try {
     const { name, description } = req.body;
     const id = req.params.id;
-    res
-      .status(200)
-      .send({ message: `book id is ${name} and ${description} ${id}` });
+
+    const result = await pool.query(
+      "UPDATE book SET name=$1, description=$2 WHERE id=$3 RETURNING*",
+      [name, description, id]
+    );
+
+    res.status(200).send({ message: `book id is UPDATE`, book: result.rows });
   } catch (error) {
     res.send({ error: "error.message" });
   }
